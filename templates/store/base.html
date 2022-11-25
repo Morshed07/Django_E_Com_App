@@ -1,3 +1,5 @@
+{% load cart_product %}
+{% load category %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -151,58 +153,54 @@
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    {% if request.user.is_authenticated %}
+                                    <span class="cart-count">{{request.user|cart_count}}</span>
+                                    {% else %}
+                                    <span class="cart-count">{{request.user|cart_count}}</span>
+                                    {% endif %}
                                 </div>
                                 <p>Cart</p>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
+
+                                    {% if request.user.is_authenticated %}
+
+                                        {% for cart in request.user|cart_view %}
                                     <div class="product">
                                         <div class="product-cart-details">
                                             <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
+                                                <a href="product.html">{{cart.item.name}}</a>
                                             </h4>
 
                                             <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
+                                                <span class="cart-product-qty">{{cart.quantity}}</span>
+                                                x ${{cart.get_total}}
                                             </span>
                                         </div><!-- End .product-cart-details -->
 
                                         <figure class="product-image-container">
                                             <a href="product.html" class="product-image">
-                                                <img src="assets/images/products/cart/product-1.jpg" alt="product">
+                                                <img src="{{cart.item.image.url}}" alt="product">
                                             </a>
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                     </div><!-- End .product -->
 
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
+                                     {% endfor %}
+                                    {% endif %}
 
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
 
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="{% static 'assets/images/products/cart/product-2.jpg' %}" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
                                 </div><!-- End .cart-product -->
 
                                 <div class="dropdown-cart-total">
                                     <span>Total</span>
-
-                                    <span class="cart-total-price">$160.00</span>
+                                    {% if request.user.is_authenticated %}
+                                    <span class="cart-total-price">${{request.user|cart_total}}</span>
+                                    {% else %}
+                                    <span class="cart-total-price">${{request.user|cart_total}}</span>
+                                    {% endif %}
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
@@ -226,17 +224,23 @@
                             <div class="dropdown-menu">
                                 <nav class="side-nav">
                                     <ul class="menu-vertical sf-arrows">
-                                        <li class="item-lead"><a href="#">Daily offers</a></li>
-                                        <li class="item-lead"><a href="#">Gift Ideas</a></li>
-                                        <li><a href="#">Beds</a></li>
-                                        <li><a href="#">Lighting</a></li>
-                                        <li><a href="#">Sofas & Sleeper sofas</a></li>
-                                        <li><a href="#">Storage</a></li>
-                                        <li><a href="#">Armchairs & Chaises</a></li>
-                                        <li><a href="#">Decoration </a></li>
-                                        <li><a href="#">Kitchen Cabinets</a></li>
-                                        <li><a href="#">Coffee & Tables</a></li>
-                                        <li><a href="#">Outdoor Furniture </a></li>
+                                        {% for cat in request.user|category %}
+                                        {% if not cat.children.all %}
+                                        <li class="item-lead"><a href="#">{{cat.name}}</a></li>
+                                        {% else %}
+                                        <li class="item-lead"><a href="#">{{cat.name}}</a>
+                                        <ul>
+                                            {% for subcategory in cat.children.all %}
+                                            <li>
+                                                <a href="">{{subcategory.name}}</a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        
+                                        </li>
+
+                                        {% endif %}
+                                        {% endfor %}
                                     </ul><!-- End .menu-vertical -->
                                 </nav><!-- End .side-nav -->
                             </div><!-- End .dropdown-menu -->
