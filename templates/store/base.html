@@ -1,4 +1,4 @@
-{% load cart_product %}
+{% comment %} {% load cart_product %} {% endcomment %}
 {% load category %}
 {% load static %}
 <!DOCTYPE html>
@@ -149,7 +149,7 @@
                             </a>
                         </div><!-- End .compare-dropdown -->
 
-                        <div class="dropdown cart-dropdown">
+                        {% comment %} <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
@@ -245,7 +245,7 @@
                                 </nav><!-- End .side-nav -->
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .category-dropdown -->
-                    </div><!-- End .header-left -->
+                    </div><!-- End .header-left --> {% endcomment %}
 
                     <div class="header-center">
                         <nav class="main-nav">
