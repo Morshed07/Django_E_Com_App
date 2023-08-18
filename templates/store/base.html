@@ -1,6 +1,7 @@
+{% load static %}
 {% load cart_product %}
 {% load category %}
-{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -156,7 +157,7 @@
                                     {% if request.user.is_authenticated %}
                                     <span class="cart-count">{{request.user|cart_count}}</span>
                                     {% else %}
-                                    <span class="cart-count">{{request.user|cart_count}}</span>
+                                    <span class="cart-count">0</span>
                                     {% endif %}
                                 </div>
                                 <p>Cart</p>
@@ -166,6 +167,8 @@
                                 <div class="dropdown-cart-products">
 
                                     {% if request.user.is_authenticated %}
+
+                                        {% if request.user|cart_view %}
 
                                         {% for cart in request.user|cart_view %}
                                     <div class="product">
@@ -189,6 +192,7 @@
                                     </div><!-- End .product -->
 
                                      {% endfor %}
+                                     {% endif %}
                                     {% endif %}
 
 
@@ -199,12 +203,12 @@
                                     {% if request.user.is_authenticated %}
                                     <span class="cart-total-price">${{request.user|cart_total}}</span>
                                     {% else %}
-                                    <span class="cart-total-price">${{request.user|cart_total}}</span>
+                                    <span class="cart-total-price">$0.00</span>
                                     {% endif %}
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'order:cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -1082,6 +1086,9 @@
         </div>
     </div>
     <!-- Plugins JS File -->
+    <script src="https://kit.fontawesome.com/b1a138c658.js" crossorigin="anonymous"></script>
+
+
     <script src="{% static 'assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.hoverIntent.min.js' %}"></script>
