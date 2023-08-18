@@ -79,30 +79,51 @@
                                         <p>{{item.preview_des}}</p>
                                     </div><!-- End .product-content -->
 
-                                    <div class="details-filter-row details-row-size">
-                                        <label>Color:</label>
 
-                                        <div class="product-nav product-nav-thumbs">
-                                            <a href="#" class="active">
-                                                <img src="{{item.image.url}}" alt="product desc">
-                                            </a>
-                                            <a href="#">
-                                                <img src="{{item.image.url}}" alt="product desc">
-                                            </a>
-                                        </div><!-- End .product-nav -->
-                                    </div><!-- End .details-filter-row -->
+                                    <form method="post" action="{% url 'order:add-to-cart' pk=item.pk %}">
+
+
+                                        {% csrf_token %}
+
+                                    {% if item.variationvalue_set.colors %}
+
+                                    <div class="details-filter-row details-row-size">
+                                        <label for="color">Color</label>
+                                        <div class="select-custom">
+                                            <select name="color" id="color" class="form-control">
+                                                <option value="#" selected="selected">Select a Color</option>
+
+                                                {% for item_variation in item.variationvalue_set.colors %}
+
+                                                <option value="{{item_variation.name}}">{{item_variation.name}}</option>
+
+                                                {% endfor %}
+                                                
+                                                
+                                            </select>
+                                        </div><!-- End .select-custom -->
+
+                                        {% endif %}
+
+                                    {% if item.variationvalue_set.sizes %}
 
                                     <div class="details-filter-row details-row-size">
                                         <label for="size">Size:</label>
                                         <div class="select-custom">
                                             <select name="size" id="size" class="form-control">
                                                 <option value="#" selected="selected">Select a size</option>
-                                                <option value="s">Small</option>
-                                                <option value="m">Medium</option>
-                                                <option value="l">Large</option>
-                                                <option value="xl">Extra Large</option>
+
+                                                {% for item_variation in item.variationvalue_set.sizes %}
+
+                                                <option value="{{item_variation.name}}">{{item_variation.name}}</option>
+
+                                                {% endfor %}
+                                                
+                                                
                                             </select>
                                         </div><!-- End .select-custom -->
+
+                                        {% endif %}
 
                                         <a href="#" class="size-guide"><i class="icon-th-list"></i>size guide</a>
                                     </div><!-- End .details-filter-row -->
@@ -115,13 +136,14 @@
                                     </div><!-- End .details-filter-row -->
 
                                     <div class="product-details-action">
-                                        <a href="{% url 'order:add-to-cart' pk=item.pk %}" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <button type="submit" class="btn-product btn-cart">Add To Cart</button>
 
                                         <div class="details-action-wrapper">
                                             <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
                                             <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a>
                                         </div><!-- End .details-action-wrapper -->
                                     </div><!-- End .product-details-action -->
+                                </form>
 
                                     <div class="product-details-footer">
                                         <div class="product-cat">
