@@ -63,13 +63,18 @@ class Cart(models.Model):
 
 
 class Order(models.Model):
+    PAYMENT_METHOD = (
+        ('Cash on Delivery', 'Cash on Delivery'),
+        ('PayPal','PayPal'),
+        ('SSLcommerz','SSLcommerz')
+    )
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     orderitems =  models.ManyToManyField(Cart)
     ordered = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     paymentId = models.CharField(max_length=255, blank= True, null= True)
     orderId = models.CharField(max_length=255, blank= True, null= True)
-
+    payment_method = models.CharField(max_length=30,choices=PAYMENT_METHOD,default='Cash on Delivery')
     def get_totals(self):
         total = 0
         for order_item in self.orderitems.all():

@@ -88,9 +88,10 @@
 
 	                			<div class="cart-bottom">
 			            			<div class="cart-discount">
-			            				<form action="#">
+			            				<form action="" method = "POST">
 			            					<div class="input-group">
-				        						<input type="text" class="form-control" required placeholder="coupon code">
+				        						{% csrf_token %}
+												{{coupon_form}}
 				        						<div class="input-group-append">
 													<button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
 												</div><!-- .End .input-group-append -->
@@ -110,7 +111,13 @@
 											
 	                						<tr class="summary-subtotal">
 	                							<td>Subtotal:</td>
-	                							<td>${{order.get_totals}}</td>
+	                							<td>
+													{% if total_price_after_discount %}
+														{{total_price_after_discount}}
+													{% else %}
+														${{order.get_totals}}
+													{% endif %}
+												</td>
 	                						</tr><!-- End .summary-subtotal -->
 											
 	                						<tr class="summary-shipping">
@@ -160,7 +167,7 @@
 	                					</tbody>
 	                				</table><!-- End .table table-summary -->
 
-	                				<a href="checkout.html" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+	                				<a href="{% url 'checkout' %}" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
 	                			</div><!-- End .summary -->
 
 		            			<a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
