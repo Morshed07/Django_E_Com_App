@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category,Product,ProductImages,VariationValue,Banner
+from .models import Category,Product,ProductImages,VariationValue,Banner,MyFavicon,MyLogo
 
 
 # Register your models here.
@@ -18,3 +18,5 @@ admin.site.register(Category)
 admin.site.register(Product,ProductAdmin)
 admin.site.register(VariationValue)
 admin.site.register(Banner)
+admin.site.register(MyLogo)
+admin.site.register(MyFavicon)
